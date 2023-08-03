@@ -1,12 +1,11 @@
 import pandas as pd
-import numpy as np
 import os
 import json
 from datetime import datetime
 
 
 # Load config.json and get input and output paths
-with open('config.json','r') as f:
+with open('config.json', 'r') as f:
     config = json.load(f)
 
 input_folder_path = config['input_folder_path']
@@ -40,6 +39,7 @@ def merge_multiple_dataframe():
         f.write('output: finaldata.csv\n')
         f.write(f'rows: {len(dataframe.index)}\n')
         f.write(f'timestamp: {str(datetime.now())}\n')
+
 
 if __name__ == '__main__':
     merge_multiple_dataframe()
