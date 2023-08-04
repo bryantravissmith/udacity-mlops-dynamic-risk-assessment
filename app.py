@@ -1,14 +1,8 @@
 from flask import Flask, session, jsonify, request
-import pandas as pd
-import numpy as np
 import pickle
-import create_prediction_model
-import diagnosis
-import predict_exited_from_saved_model
+import diagnostics
 import json
 import os
-
-
 
 # Set up variables for use in our script
 app = Flask(__name__)
@@ -18,33 +12,40 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 
 dataset_csv_path = os.path.join(config['output_folder_path'])
+test_data_path = os.path.join(config['test_data_path'])
+model_path = os.path.join(config['output_model_path'])
+prod_deployment_path = os.path.join(config['prod_deployment_path'])
 
 prediction_model = None
 
 
-#######################Prediction Endpoint
-@app.route("/prediction", methods=['POST','OPTIONS'])
+# Prediction Endpoint
+@app.route("/prediction", methods=['POST', 'OPTIONS'])
 def predict():
-    #call the prediction function you created in Step 3
-    return #add return value for prediction outputs
+    if request.method == 'POST':
+        data_path = request.form['data_path']
+        return str(diagnostics.model_predictions(data_path))
+    return ''
 
-#######################Scoring Endpoint
-@app.route("/scoring", methods=['GET','OPTIONS'])
-def stats():
-    #check the score of the deployed model
-    return #add return value (a single F1 score number)
 
-#######################Summary Statistics Endpoint
-@app.route("/summarystats", methods=['GET','OPTIONS'])
-def stats():
-    #check means, medians, and modes for each column
-    return #return a list of all calculated summary statistics
+# Scoring Endpoint
+@app.route("/scoring", methods=['GET', 'OPTIONS'])
+def scoring():
+    f = open(f'{prod_deployment_path}/latestscore.txt', 'r')
+    return f.readline()
 
-#######################Diagnostics Endpoint
-@app.route("/diagnostics", methods=['GET','OPTIONS'])
+
+# Summary Statistics Endpoint
+@app.route("/summarystats", methods=['GET', 'OPTIONS'])
 def stats():
-    #check timing and percent NA values
-    return #add return value for all diagnostics
+    return str(diagnostics.dataframe_summary())
+
+
+# Diagnostics Endpoint
+@app.route("/diagnostics", methods=['GET', 'OPTIONS'])
+def nas():
+    return str(diagnostics.dataframe_nas())
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8000, debug=True, threaded=True)

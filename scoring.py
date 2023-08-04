@@ -30,7 +30,7 @@ def score_model():
 
     f = open(f'{dataset_csv_path}/latestscore.txt', 'w')
 
-    f.write(f'f1: {f1_score}')
+    f.write(f'{f1_score}')
 
 
 if __name__ == '__main__':

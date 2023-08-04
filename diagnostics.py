@@ -6,7 +6,7 @@ import pickle
 import subprocess
 
 # Load config.json and get environment variables
-with open('config.json','r') as f:
+with open('config.json', 'r') as f:
     config = json.load(f)
 
 dataset_csv_path = os.path.join(config['output_folder_path'])
@@ -15,12 +15,12 @@ prod_deployment_path = os.path.join(config['prod_deployment_path'])
 
 
 # Function to get model predictions
-def model_predictions():
+def model_predictions(datapath):
     filehandler = open(f'{prod_deployment_path}/trainedmodel.pkl', 'rb')
     model = pickle.load(filehandler)
-    testdata = pd.read_csv(f'{test_data_path}/testdata.csv')
-    y_pred = model.predict(testdata[['lastmonth_activity', 'lastyear_activity',
-                                     'number_of_employees']])
+    data = pd.read_csv(datapath)
+    y_pred = model.predict(data[['lastmonth_activity', 'lastyear_activity',
+                                 'number_of_employees']])
     return list(y_pred)
 
 
@@ -63,7 +63,7 @@ def outdated_packages_list():
 
 
 if __name__ == '__main__':
-    model_predictions()
+    model_predictions(f'{test_data_path}/testdata.csv')
     dataframe_summary()
     execution_time()
     outdated_packages_list()
