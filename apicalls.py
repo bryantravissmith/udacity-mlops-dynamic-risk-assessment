@@ -21,6 +21,6 @@ response4 = requests.get(f'{URL}/diagnostics').text
 responses = '\n'.join([ response1, response2, response3, response4])
 
 # write the responses to your workspace
-filehandler = open(f'{dataset_csv_path}/apireturns.txt', 'w')
+filehandler = open(f'{dataset_csv_path}/apireturns_2.txt', 'w')
 filehandler.write(responses)
 

@@ -8,6 +8,7 @@ with open('config.json', 'r') as f:
 
 dataset_csv_path = os.path.join(config['output_folder_path'])
 prod_deployment_path = os.path.join(config['prod_deployment_path'])
+model_path = os.path.join(config['output_model_path'])
 
 
 # function for deployment
@@ -23,7 +24,11 @@ def store_model_into_pickle(model):
     pickle.dump(model, filehandler)
 
 
-if __name__ == '__main__':
-    filehandler = open('practicemodels/trainedmodel.pkl', 'rb')
+def run():
+    filehandler = open(f'{model_path}/trainedmodel.pkl', 'rb')
     model = pickle.load(filehandler)
     store_model_into_pickle(model)
+
+
+if __name__ == '__main__':
+    run()

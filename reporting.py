@@ -16,7 +16,7 @@ prod_deployment_path = os.path.join(config['prod_deployment_path'])
 
 
 # Function for reporting
-def score_model():
+def reporting():
     filehandler = open(f'{prod_deployment_path}/trainedmodel.pkl', 'rb')
     model = pickle.load(filehandler)
     testdata = pd.read_csv(f'{test_data_path}/testdata.csv')
@@ -30,8 +30,8 @@ def score_model():
     plt.clf()
     plt.figure(figsize=(8, 8), tight_layout=True)
     sns.heatmap(confusion_matrix, annot=True)
-    plt.savefig(f'{dataset_csv_path}/confusion_matrix.png')
+    plt.savefig(f'{dataset_csv_path}/confusion_matrix_2.png')
 
 
 if __name__ == '__main__':
-    score_model()
+    reporting()

@@ -27,7 +27,7 @@ def model_predictions(datapath):
 # Function to get summary statistics
 def dataframe_summary():
     dataframe = pd.read_csv(f'{dataset_csv_path}/finaldata.csv')[[
-        'lastmonth_activity', 'lastyear_activity','number_of_employees'
+        'lastmonth_activity', 'lastyear_activity', 'number_of_employees'
     ]]
     means = list(dataframe.mean())
     medians = list(dataframe.median())
@@ -38,7 +38,7 @@ def dataframe_summary():
 # Function to get NAs rates
 def dataframe_nas():
     dataframe = pd.read_csv(f'{dataset_csv_path}/finaldata.csv')[[
-        'lastmonth_activity', 'lastyear_activity','number_of_employees'
+        'lastmonth_activity', 'lastyear_activity', 'number_of_employees'
     ]]
     nas = list(dataframe.isna().mean())
     return nas
@@ -62,8 +62,12 @@ def outdated_packages_list():
     return broken.split('\n')
 
 
-if __name__ == '__main__':
+def run():
     model_predictions(f'{test_data_path}/testdata.csv')
     dataframe_summary()
     execution_time()
-    outdated_packages_list()
+    #outdated_packages_list()
+
+
+if __name__ == '__main__':
+    run()

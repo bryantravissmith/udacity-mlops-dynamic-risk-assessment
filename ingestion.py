@@ -15,6 +15,7 @@ output_folder_path = config['output_folder_path']
 # Function for data ingestion
 def merge_multiple_dataframe():
     dataframe = pd.DataFrame()
+
     f = open(f'{output_folder_path}/ingestedfiles.txt', 'w')
     f.write('Sources: ')
     for i, file in enumerate(os.listdir(input_folder_path)):
