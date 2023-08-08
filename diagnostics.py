@@ -58,15 +58,27 @@ def execution_time():
 
 # Function to check dependencies
 def outdated_packages_list():
-    broken = subprocess.check_output(['python', '-m', 'pip', 'check'])
-    return broken.split('\n')
+    outdated = subprocess.check_output([
+        'python', '-m', 'pip', 'list', '--outdated', '--format', 'columns'
+    ]).decode('utf-8').split('\n')
+
+    outdated_df = pd.DataFrame(columns=['package', 'installed', 'current'])
+    for package in outdated[2:]:
+        clean_info = [s for s in package.split(' ') if s != ''][:3]
+        if len(clean_info) == 3:
+            outdated_df = outdated_df.append(
+                pd.DataFrame([clean_info],
+                             columns=['package', 'installed', 'current'])
+            )
+    return outdated_df
 
 
 def run():
     model_predictions(f'{test_data_path}/testdata.csv')
     dataframe_summary()
+    dataframe_nas()
     execution_time()
-    #outdated_packages_list()
+    outdated_packages_list()
 
 
 if __name__ == '__main__':
